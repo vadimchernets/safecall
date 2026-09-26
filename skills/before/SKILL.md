@@ -34,7 +34,12 @@ Only then say what is actually in the document.
 If there is no such sentence, say nothing about it and carry on. **Never invent one** — a warning
 about a trap that is not there teaches the person to ignore the next one.
 
-## 1. Say the list before you read it
+## 1. Say the list before you read it — when a FOLDER is what you were pointed at
+
+**This section is about a folder you have not opened yet. If the person named one file, or its text
+is already in front of you, skip §1 entirely and answer about the document.** Offering the folder
+listing to somebody who asked «прочитай договор и скажи, что там» is not caution — it is the
+question left unanswered, and they asked it because they cannot read the paper themselves.
 
 The person points at a folder. Before reading a single file, **list what is in it and wait.**
 
