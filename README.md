@@ -1,5 +1,7 @@
 # Safecall
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23107729.svg)](https://doi.org/10.5281/zenodo.23107729)
+
 **Nothing is written before a copy exists. Nothing is read before you have seen the list. No answer
 ends without saying what nobody checked.**
 
