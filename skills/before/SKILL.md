@@ -2,7 +2,7 @@
 name: before
 description: Before you change anything in a person's folder, copy what you are about to touch and say out loud what you are about to read. Use this whenever the person first points you at a folder of their own documents, before the first edit of a session, and any time they sound nervous about their files. Also use it when they ask "will you delete my documents", "is this safe", "what will you do to my files".
 argument-hint: "[the folder, if it is not the one we are in]"
-allowed-tools: Bash(sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/snapshot.py *) PowerShell(& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" safecall say scripts/snapshot.py *) Read Glob
+allowed-tools: Bash(sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/snapshot.py *) PowerShell(${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1 safecall say scripts/snapshot.py *) Read Glob
 ---
 
 # Safecall: before you touch anything
@@ -11,9 +11,11 @@ allowed-tools: Bash(sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scri
 
 Every script command on this page is written for the **Bash** tool and starts with
 `sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/…`. If your shell tool is **PowerShell** (Windows
-without Git Bash), run the same command with only its start changed: `& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1"`
-in place of `sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh"`, everything after it unchanged, on one line; text for
-standard input goes in as `@'…'@ | & "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" …` instead of `<<'EOF'`.
+without Git Bash), only the start changes: write the launcher's path bare, with no quotes and no `&`
+— `${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1 safecall say scripts/…` — and keep the rest, on one line; that is the
+form this skill's permission covers. Only if that path has a space in it, write
+`& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" …` instead (the person is then asked once). Text for standard input:
+`@'…'@ | ${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1 …` (`| & "…"` if the path has a space) instead of `<<'EOF'` — also asked once.
 Never call `python3`, `python` or `py` yourself: the launcher finds a real Python 3.8+ (`python`,
 then `py -3`, then `python3`) and never starts the Microsoft Store or Apple stub. If it answers
 with one line saying safecall "is paused" because this computer has no working Python 3 yet, tell the
