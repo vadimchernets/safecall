@@ -42,9 +42,24 @@ Safecall закрывает обе и добавляет три разбора, 
 ## Установка
 
 ```
-/plugin marketplace add <the Poly A1 folder>
+/plugin marketplace add https://raw.githubusercontent.com/vadimchernets/poly-a1-plugins/main/.claude-plugin/marketplace.json
 /plugin install safecall@poly-a1
 ```
+
+Первая строка добавляет каталог Poly A1 по ссылке: это один файл, git и аккаунт GitHub не нужны, а
+исправления потом приходят оттуда же (Claude Code 2.1.224 или новее; `claude update`). Если `poly-a1`
+уже есть — из папки Poly A1 или с прошлого раза, — первую строку пропустите: хватит второй.
+
+Без интернета — из папки Poly A1:
+
+```
+/plugin marketplace add <путь к папке Poly A1>
+/plugin install safecall@poly-a1
+```
+
+Когда интернет появится, папку переключают на ссылку на месте, ничего не теряя
+([как](https://github.com/vadimchernets/poly-a1-plugins/blob/main/OFFER-THESE.md#later-from-the-folder-to-github-without-losing-anything)). Никогда не `/plugin marketplace remove poly-a1`: так удаляются все плагины из него
+вместе с их сохранёнными данными.
 
 Потом в `/plugin` → Marketplaces **включите автообновление**: для чужих каталогов оно выключено по
 умолчанию, и без него вы навсегда останетесь на той версии, которую поставили.

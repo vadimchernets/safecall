@@ -43,9 +43,24 @@ Two hooks, both quiet:
 ## Install
 
 ```
-/plugin marketplace add <the Poly A1 folder>
+/plugin marketplace add https://raw.githubusercontent.com/vadimchernets/poly-a1-plugins/main/.claude-plugin/marketplace.json
 /plugin install safecall@poly-a1
 ```
+
+The first line adds Poly A1's catalogue by its link - one file, no git and no GitHub account - and
+later corrections reach you from the same place (Claude Code 2.1.224 or later; `claude update`). If
+`poly-a1` is already there, from the Poly A1 folder or from before, skip it: the second line is enough.
+
+Without internet, from the Poly A1 folder:
+
+```
+/plugin marketplace add <path to the Poly A1 folder>
+/plugin install safecall@poly-a1
+```
+
+Once there is internet, the folder is switched to the link in place, keeping everything installed
+([how](https://github.com/vadimchernets/poly-a1-plugins/blob/main/OFFER-THESE.md#later-from-the-folder-to-github-without-losing-anything)). Never `/plugin marketplace remove poly-a1`: it uninstalls every plugin that came from
+it and deletes their saved data.
 
 Then, in `/plugin` → Marketplaces, **turn on auto-update** — for marketplaces that are not
 Anthropic's own it is off by default, and without it you stay on the version you installed.
@@ -76,8 +91,9 @@ and the plugin helps you ask it rather than answering it for you.
 
 ## Requirements
 
-Claude Code with plugin support, and `python3` on the machine (macOS and most Linux have it; on
-Windows install it from python.org or the Microsoft Store).
+Claude Code with plugin support, and Python 3 on the machine (macOS with Apple's Command Line Tools
+and most Linux have it; on Windows `winget install -e --id Python.Python.3.12 --scope user`). The hooks
+run on Mac, Linux and Windows - on Windows with Git Bash or, without it, in PowerShell.
 
 ## Licence
 
