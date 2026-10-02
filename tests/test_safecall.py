@@ -62,8 +62,20 @@ class Base(unittest.TestCase):
         """One PreToolUse call. `session` is the conversation, as Claude Code passes it."""
         payload = json.dumps({"tool_name": tool, "session_id": session,
                               "tool_input": {"file_path": str(path)}})
-        return subprocess.run([sys.executable, str(GUARD)], input=payload,
+        done = subprocess.run([sys.executable, str(GUARD)], input=payload,
                               capture_output=True, text=True, env=self.env, cwd=str(self.work))
+        return blocked_as_two(done)
+
+
+def blocked_as_two(done):
+    """The guard blocks with a "deny" decision on stdout and exit 0 (02.10.2026; exit 2 made Claude Code show the
+    whole two-line hook command before the reason). The tests below were written for "2 and stderr": a deny is
+    read back into that shape here, and only a well-formed deny counts - nothing else on stdout is a block."""
+    if done.returncode != 0 or not done.stdout.lstrip().startswith("{"):
+        return done
+    decision = json.loads(done.stdout)["hookSpecificOutput"]
+    assert decision["hookEventName"] == "PreToolUse" and decision["permissionDecision"] == "deny", decision
+    return subprocess.CompletedProcess(done.args, 2, "", decision["permissionDecisionReason"] + "\n")
 
 
 class TestSnapshot(Base):

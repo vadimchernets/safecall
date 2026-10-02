@@ -30,7 +30,10 @@ What it does NOT do, deliberately:
 
 It blocks in exactly one case: the copy could not be made, so the write cannot be undone.
 
-Exit 0 = allow. Exit 2 = block, and stderr is what Claude is told.
+Exit 0 always. A block is a "deny" decision on stdout (JSON), whose reason is what Claude is told; anything else
+on stdout is a plain line for Claude and the write goes on. Not exit 2 (02.10.2026, measured on Claude Code
+2.1.288): on exit 2 Claude Code puts the whole two-line hook command (the sh launcher and its PowerShell twin)
+in front of the reason; a "deny" arrives as the reason alone, and blocks just the same.
 """
 
 import json
@@ -170,12 +173,13 @@ def main():
               f"it - the copies folder is probably unavailable. The edit went through WITH NO "
               f"COPY. Tell the person in THEIR language.")
         return 0
-    sys.stderr.write(
-        f"Safecall: could not copy \"{target.name}\", so this edit would be one-way.\n"
-        f"Reason: {why}\n"
-        f"Tell the person in THEIR language and ask whether to change the file with no copy. "
-        f"If they say yes, repeat the edit - it will go through the second time.\n")
-    return 2
+    reason = (f"Safecall: could not copy \"{target.name}\", so this edit would be one-way.\n"
+              f"Reason: {why}\n"
+              f"Tell the person in THEIR language and ask whether to change the file with no copy. "
+              f"If they say yes, repeat the edit - it will go through the second time.")
+    print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                             "permissionDecisionReason": reason}}, ensure_ascii=False))
+    return 0
 
 
 # ── The pass: how long "yes, change it without a copy" lasts ────────────────────────────────
