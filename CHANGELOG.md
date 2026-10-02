@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.6 — 2026-10-02
+
+- Skills run their scripts through the step-0 launcher, on every system: the Bash tool runs
+  `sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/<name>.py ...`, the PowerShell tool (Windows without
+  Git Bash) the same line starting with the bare path `${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1`. No skill calls `python3`
+  any more (on Windows it is often missing or the Microsoft Store stub). The launcher takes a Python only once `-c`
+  proves 3.8+, tries `python`, `py -3`, `python3` on Windows, never starts the Store or Apple stub, and with no Python
+  says one step-0 line. Scripts are passed relative to the plugin root; text piped in PowerShell reaches the script as
+  UTF-8 with no BOM (Windows PowerShell 5.1 wrote one). `allowed-tools` grant both forms, quoted as the command is -
+  the old unquoted `Bash(python3 ${CLAUDE_PLUGIN_ROOT}/...)` never matched the quoted commands and always prompted.
+  Checked on GitHub Actions on windows-latest, macos-latest and ubuntu-latest, including a real `claude -p` that opens a
+  skill and runs its command with no prompt, through Bash and through PowerShell.
+- The guard's one refusal (a copy could not be made) is now the documented PreToolUse `deny` on stdout: Claude
+  Code shows the reason alone instead of the whole two-line hook command in front of it.
+
 ## 0.1.5 — 2026-10-02
 
 - Hooks on Windows without Git Bash. There Claude Code runs hook commands in PowerShell, where `sh` does not
