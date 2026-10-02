@@ -7,12 +7,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "exec sh \"${CLAUDE_PLUGIN_ROOT}/hooks/python.sh\" safecall say \"${CLAUDE_PLUGIN_ROOT}/scripts/state.py\" now\n& ([scriptblock]::Create((Get-Content -Raw -LiteralPath \"${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1\"))) safecall say \"${CLAUDE_PLUGIN_ROOT}/scripts/state.py\" now",
+            "command": "exec sh \"${CLAUDE_PLUGIN_ROOT}/hooks/python.sh\" safecall say \"${CLAUDE_PLUGIN_ROOT}/scripts/state.py\" now\ntrap { continue }; & ([scriptblock]::Create((Get-Content -Raw -LiteralPath \"${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1\"))) safecall say \"${CLAUDE_PLUGIN_ROOT}/scripts/state.py\" now",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": "exec sh \"${CLAUDE_PLUGIN_ROOT}/hooks/python.sh\" safecall quiet \"${CLAUDE_PLUGIN_ROOT}/scripts/state.py\" show\n& ([scriptblock]::Create((Get-Content -Raw -LiteralPath \"${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1\"))) safecall quiet \"${CLAUDE_PLUGIN_ROOT}/scripts/state.py\" show",
+            "command": "exec sh \"${CLAUDE_PLUGIN_ROOT}/hooks/python.sh\" safecall quiet \"${CLAUDE_PLUGIN_ROOT}/scripts/state.py\" show\ntrap { continue }; & ([scriptblock]::Create((Get-Content -Raw -LiteralPath \"${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1\"))) safecall quiet \"${CLAUDE_PLUGIN_ROOT}/scripts/state.py\" show",
             "timeout": 10
           }
         ]
@@ -24,7 +24,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "exec sh \"${CLAUDE_PLUGIN_ROOT}/hooks/python.sh\" safecall quiet \"${CLAUDE_PLUGIN_ROOT}/scripts/guard.py\"\n& ([scriptblock]::Create((Get-Content -Raw -LiteralPath \"${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1\"))) safecall quiet \"${CLAUDE_PLUGIN_ROOT}/scripts/guard.py\"",
+            "command": "exec sh \"${CLAUDE_PLUGIN_ROOT}/hooks/python.sh\" safecall quiet \"${CLAUDE_PLUGIN_ROOT}/scripts/guard.py\"\ntrap { continue }; & ([scriptblock]::Create((Get-Content -Raw -LiteralPath \"${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1\"))) safecall quiet \"${CLAUDE_PLUGIN_ROOT}/scripts/guard.py\"",
             "timeout": 20
           }
         ]
