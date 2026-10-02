@@ -2,10 +2,22 @@
 name: named
 description: Check that every file you are about to name in an answer really exists on this person's disk, before you name it. Use it before telling them what is in their folder, before citing a document back at them, and before any answer that says "your folder has…" or "file X says…". Also use it when they ask "where is this file?", "I don't see one like that", "I don't have that".
 argument-hint: "[the folder, if it is not the one we are in]"
-allowed-tools: Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/paths.py *) Read Glob
+allowed-tools: Bash(sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/paths.py *) PowerShell(& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" safecall say scripts/paths.py *) Read Glob
 ---
 
 # Safecall: do not name a file that is not there
+
+## Running safecall's scripts (Mac, Linux, Windows)
+
+Every script command on this page is written for the **Bash** tool and starts with
+`sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/…`. If your shell tool is **PowerShell** (Windows
+without Git Bash), run the same command with only its start changed: `& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1"`
+in place of `sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh"`, everything after it unchanged, on one line; text for
+standard input goes in as `@'…'@ | & "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" …` instead of `<<'EOF'`.
+Never call `python3`, `python` or `py` yourself: the launcher finds a real Python 3.8+ (`python`,
+then `py -3`, then `python3`) and never starts the Microsoft Store or Apple stub. If it answers
+with one line saying safecall "is paused" because this computer has no working Python 3 yet, tell the
+person that in one plain line and go on by hand — never show them a Python error and stop.
 
 The user said: $ARGUMENTS
 
@@ -24,7 +36,7 @@ A named file is a claim about their disk. **Claims about the disk get checked ag
 Put your draft answer through the script:
 
 ```
-python3 "${CLAUDE_PLUGIN_ROOT}/scripts/paths.py" --folder "<the folder>" --text "<your draft>"
+sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/paths.py --folder "<the folder>" --text "<your draft>"
 ```
 
 It lists every file name your text contains and says which are really there. Exit 1 means at least
@@ -61,7 +73,7 @@ Do not print the check at the person. They do not need a list of verified paths 
 answer that is true. Run it, fix what is wrong, and say nothing about having run it, unless
 something was wrong.
 
-## If `python3` is not on this machine
+## If the launcher says there is no Python
 
-Try `py -3`, then `python`. If none runs, do the check with `Glob` and your own eyes instead — the
+Do the check with `Glob` and your own eyes instead — the
 obligation is to look, not to run this script.

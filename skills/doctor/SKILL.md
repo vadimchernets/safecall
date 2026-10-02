@@ -2,10 +2,22 @@
 name: doctor
 description: Work out why the AI on this computer is not answering, and say it in words a person who is not a programmer can act on. Use it when the PERSON is stuck and says so - "nothing is happening", "it's silent", "it doesn't work", "it's stuck", "it wrote something in red", "I don't understand what happened", "I'm scared to click" - or when a failure has clearly stopped them and they are about to give up. Do NOT use it for an ordinary error you can simply fix yourself and carry on: this skill is for a frightened person, not for every non-zero exit code.
 argument-hint: "[what they see on the screen, in their own words]"
-allowed-tools: Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/state.py *) Read Glob
+allowed-tools: Bash(sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/state.py *) PowerShell(& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" safecall say scripts/state.py *) Read Glob
 ---
 
 # Safecall: why nothing is happening
+
+## Running safecall's scripts (Mac, Linux, Windows)
+
+Every script command on this page is written for the **Bash** tool and starts with
+`sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/…`. If your shell tool is **PowerShell** (Windows
+without Git Bash), run the same command with only its start changed: `& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1"`
+in place of `sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh"`, everything after it unchanged, on one line; text for
+standard input goes in as `@'…'@ | & "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" …` instead of `<<'EOF'`.
+Never call `python3`, `python` or `py` yourself: the launcher finds a real Python 3.8+ (`python`,
+then `py -3`, then `python3`) and never starts the Microsoft Store or Apple stub. If it answers
+with one line saying safecall "is paused" because this computer has no working Python 3 yet, tell the
+person that in one plain line and go on by hand — never show them a Python error and stop.
 
 The user said: $ARGUMENTS
 

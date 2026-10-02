@@ -2,10 +2,22 @@
 name: show
 description: Say what you are about to change before you change it, and what appeared on the disk after you did. Use it before the first edit of any session, before anything that touches more than one file, and after finishing a piece of work. Triggers on "what have you done", "what changed", "show me what you'll change", "what did you do", "what files did you create".
 argument-hint: "[nothing, or the file you are about to change]"
-allowed-tools: Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/snapshot.py *) Read Glob Grep
+allowed-tools: Bash(sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/snapshot.py *) PowerShell(& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" safecall say scripts/snapshot.py *) Read Glob Grep
 ---
 
 # Safecall: say it before, and show it after
+
+## Running safecall's scripts (Mac, Linux, Windows)
+
+Every script command on this page is written for the **Bash** tool and starts with
+`sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/…`. If your shell tool is **PowerShell** (Windows
+without Git Bash), run the same command with only its start changed: `& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1"`
+in place of `sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh"`, everything after it unchanged, on one line; text for
+standard input goes in as `@'…'@ | & "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" …` instead of `<<'EOF'`.
+Never call `python3`, `python` or `py` yourself: the launcher finds a real Python 3.8+ (`python`,
+then `py -3`, then `python3`) and never starts the Microsoft Store or Apple stub. If it answers
+with one line saying safecall "is paused" because this computer has no working Python 3 yet, tell the
+person that in one plain line and go on by hand — never show them a Python error and stop.
 
 The user said: $ARGUMENTS
 

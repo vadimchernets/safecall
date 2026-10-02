@@ -2,10 +2,22 @@
 name: where
 description: Pick up where the last evening stopped, and write down where this one stopped. Use it at the start of a session on a task that spans days, and when the person says "where did we leave off", "what did we do yesterday", "let's continue", "where were we", "let's call it a day", or when the AI warns that the quota is running out.
 argument-hint: "[on | off | what to remember]"
-allowed-tools: Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/state.py *) Read
+allowed-tools: Bash(sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/state.py *) PowerShell(& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" safecall say scripts/state.py *) Read
 ---
 
 # Safecall: where we stopped
+
+## Running safecall's scripts (Mac, Linux, Windows)
+
+Every script command on this page is written for the **Bash** tool and starts with
+`sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/…`. If your shell tool is **PowerShell** (Windows
+without Git Bash), run the same command with only its start changed: `& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1"`
+in place of `sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh"`, everything after it unchanged, on one line; text for
+standard input goes in as `@'…'@ | & "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" …` instead of `<<'EOF'`.
+Never call `python3`, `python` or `py` yourself: the launcher finds a real Python 3.8+ (`python`,
+then `py -3`, then `python3`) and never starts the Microsoft Store or Apple stub. If it answers
+with one line saying safecall "is paused" because this computer has no working Python 3 yet, tell the
+person that in one plain line and go on by hand — never show them a Python error and stop.
 
 The user said: $ARGUMENTS
 
@@ -15,7 +27,7 @@ between two evenings can be a week.
 ## 1. At the start
 
 ```
-python3 "${CLAUDE_PLUGIN_ROOT}/scripts/state.py" show --folder "<the folder>"
+sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/state.py show --folder "<the folder>"
 ```
 
 Say it back in two lines and one question:
@@ -31,14 +43,14 @@ Write the note **only when the person says to**, or when you are about to run ou
 a warning about the quota is the moment to save, not the moment to start something new.
 
 ```
-python3 "${CLAUDE_PLUGIN_ROOT}/scripts/state.py" save --folder "<the folder>" \
+sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/state.py save --folder "<the folder>" \
   --done "<what is finished>" --left "<what is not>" \
   --next "<the single next step>" --traps "<what tripped us up>"
 ```
 
 Four fields, one short sentence each. `--next` is one step, not a plan.
 
-**The command is not the answer.** Run it; do not print it. A line starting with `python3` is the
+**The command is not the answer.** Run it; do not print it. A line starting with `sh` or `python3` is the
 single most frightening thing this person can be shown, and it tells them nothing about what you
 just wrote down about their evening.
 
@@ -81,11 +93,10 @@ Two things, in this order, and nothing else:
 Do not start a new piece of work after that warning. Do not say the quota running out is their
 fault or that they must pay more — it is neither.
 
-## If `python3` is not on this machine
+## If the launcher says there is no Python
 
-On Windows it often is not, or the name opens the Microsoft Store instead of running anything.
-**This is not the person's fault and it is not a broken plugin.** Try `py -3` and then `python` in
-place of `python3`; if none of them runs, say so in one plain line and carry on doing the job by
+On Windows Python is often missing at first, and on a Mac it may wait for Apple's Command Line Tools.
+**This is not the person's fault and it is not a broken plugin.** Say so in one plain line and carry on doing the job by
 hand — you can still read the folder, still say what you are about to change, still be careful.
 What you must never do is show them a Python error and stop.
 

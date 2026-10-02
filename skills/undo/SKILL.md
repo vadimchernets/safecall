@@ -2,10 +2,22 @@
 name: undo
 description: Put the person's files back the way they were before you changed them. Use this the moment they say anything like "put it back the way it was", "put it back", "undo that", "you broke it", "undo it", "I don't like it, go back" - and use it before arguing that the change was correct. Also use it when they sound frightened about what just happened to a file.
 argument-hint: "[which copy, if not the most recent one]"
-allowed-tools: Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/snapshot.py *) Read
+allowed-tools: Bash(sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/snapshot.py *) PowerShell(& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" safecall say scripts/snapshot.py *) Read
 ---
 
 # Safecall: put it back the way it was
+
+## Running safecall's scripts (Mac, Linux, Windows)
+
+Every script command on this page is written for the **Bash** tool and starts with
+`sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/…`. If your shell tool is **PowerShell** (Windows
+without Git Bash), run the same command with only its start changed: `& "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1"`
+in place of `sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh"`, everything after it unchanged, on one line; text for
+standard input goes in as `@'…'@ | & "${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1" …` instead of `<<'EOF'`.
+Never call `python3`, `python` or `py` yourself: the launcher finds a real Python 3.8+ (`python`,
+then `py -3`, then `python3`) and never starts the Microsoft Store or Apple stub. If it answers
+with one line saying safecall "is paused" because this computer has no working Python 3 yet, tell the
+person that in one plain line and go on by hand — never show them a Python error and stop.
 
 The user said: $ARGUMENTS
 
@@ -15,7 +27,7 @@ it back the way it was" is frightened, and an explanation before the undo reads 
 ## 1. Show what can be put back
 
 ```
-python3 "${CLAUDE_PLUGIN_ROOT}/scripts/snapshot.py" list --folder "<the folder>"
+sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/snapshot.py list --folder "<the folder>"
 ```
 
 Say the list in dates and file names, not in numbers of snapshots:
@@ -41,7 +53,7 @@ If your draft has the question but not the middle line, it is not finished — a
 send it. Then, once they say yes:
 
 ```
-python3 "${CLAUDE_PLUGIN_ROOT}/scripts/snapshot.py" restore --yes --folder "<the folder>"
+sh "${CLAUDE_PLUGIN_ROOT}/hooks/python.sh" safecall say scripts/snapshot.py restore --yes --folder "<the folder>"
 ```
 
 Add `last` or a number to pick an older copy.
@@ -67,11 +79,10 @@ open and unsaved in a program. Name the one that fits their machine and walk the
 
 Then make a copy of whatever is left, immediately, before doing anything else.
 
-## If `python3` is not on this machine
+## If the launcher says there is no Python
 
-On Windows it often is not, or the name opens the Microsoft Store instead of running anything.
-**This is not the person's fault and it is not a broken plugin.** Try `py -3` and then `python` in
-place of `python3`; if none of them runs, say so in one plain line and carry on doing the job by
+On Windows Python is often missing at first, and on a Mac it may wait for Apple's Command Line Tools.
+**This is not the person's fault and it is not a broken plugin.** Say so in one plain line and carry on doing the job by
 hand — you can still read the folder, still say what you are about to change, still be careful.
 What you must never do is show them a Python error and stop.
 
