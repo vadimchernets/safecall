@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.8 — 2026-10-03
+
+- Wording: no disclaimers. Every text the person or the model reads says what Safecall does, as a
+  capability: no "not legal advice" line under a contract reading, no "does nothing for now", no
+  apology in the no-Python and no-copy messages. The "where it goes" sentence in `/safecall:before`
+  is one fact plus the person's choice; the line for an answer someone will show to an office now
+  says where the official proof comes from and how to ask for it in writing. The step-0 line reads
+  "<plugin> is paused: it starts working the moment this computer has Python 3". The README's
+  privacy section is "Your disk, your choice"; SECURITY.md is the dry minimum and matches what the
+  guard actually does (copies, and stops a write only when no copy can be made). The guard's logic is
+  unchanged. New test `tests/test_no_disclaimers.py` keeps stop phrases out of every shipped text.
+
 ## 0.1.7 — 2026-10-02
 
 - On Windows the step-0 launcher (`hooks/python.ps1`, and `hooks/python.sh` in Git Bash) also finds a Python installed

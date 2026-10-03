@@ -38,7 +38,7 @@ Two hooks, both quiet:
   the write through. Nobody is stopped: a copy costs nothing, so there is nothing to refuse. A new
   file is untouched, reading is untouched. The one refusal is a file that *cannot* be copied (its
   name mentions a password or a key) — then the change would be one-way, and the person is asked.
-  With no `python3` on the machine the hooks quietly do nothing and the session works.
+  The session runs as usual on any machine; the copies switch on wherever Python 3 is installed.
 
 ## Install
 
@@ -77,17 +77,14 @@ larger than 5 MB a file or 50 MB a copy.
 **Files whose name mentions a password or a key are never copied** — a copy of a secret is a second
 secret, and this folder is not guarded the way the original may be.
 
-## What it never does — and the one thing it cannot promise
+## Your disk, your choice
 
 **Safecall itself** makes no network call, has no account, no key, and installs no second program.
 Every file it writes is on your own disk and you can open all of it. Python 3.8+ and nothing else.
 
-**But Safecall does not make Claude Code private, and this plugin will not pretend otherwise.**
-A document you give Claude Code is sent to Anthropic to be read — that is how Claude Code works,
-with or without this plugin. Safecall decides *whether a file can be put back*, not *where it
-goes*. So the old rule still holds, and `/safecall:before` says it out loud: do not hand over a
-folder you would not post to a stranger. What to show and what to keep back is a separate question,
-and the plugin helps you ask it rather than answering it for you.
+What you give Claude Code goes to Anthropic to be read — that is how Claude Code works. Safecall
+makes every changed file returnable and shows you the list before anything is read, so you choose
+what goes in: `/safecall:before` names the folders worth keeping to yourself in plain words.
 
 ## Requirements
 

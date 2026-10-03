@@ -49,7 +49,7 @@ Three things at most, in order, in their words. For example:
 
 > 1. Ask them in writing: "how much is withheld if I terminate in a month?"
 > 2. Don't sign until you get a reply in writing.
-> 3. If the amount is more than <X> — that's a conversation with a lawyer, not with me.
+> 3. If they will not put it in writing — that refusal is your answer.
 
 Then close with the receipt, written out here rather than called as another skill —
 a skill cannot invoke a skill, and `/safecall:receipt` written in your answer reaches the person as
@@ -61,8 +61,6 @@ a literal line of text they cannot use:
 
 And if anything here turns on a rule, a price or a date that changes, add the line that says which
 page to open and what to look for on it. Never write "all clear" when the truth is "didn't look".
-
-And say plainly that this is not legal advice and not a document anyone else has to accept.
 
 **Do not say "all clear"** if you merely found nothing. Say "I read all of it and found no catches
 in these places" — and name the places you looked.

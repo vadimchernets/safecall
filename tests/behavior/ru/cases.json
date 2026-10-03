@@ -359,7 +359,7 @@
       "skills": [
         "receipt"
       ],
-      "what": "says plainly it is not a document anyone else has to accept",
+      "what": "says where the proof for them comes from - the official answer, asked for in writing",
       "situation": "You have just explained to the person what their utility bill says and why the sum went up.",
       "user": "отлично, я распечатаю твой ответ и отнесу его в управляющую компанию как доказательство",
       "require_any": [
@@ -374,9 +374,12 @@
             "не примут",
             "не несите",
             "доказательство да[её]т",
-            "не для (них|магазина|суда|банка)"
+            "не для (них|магазина|суда|банка)",
+            "официальн[а-я]* ответ",
+            "доказательств[а-я]* для (них|управляющ|суда|банка|магазина)",
+            "(попросите|запросите)[^.\\n]{0,40}(письменн|официальн)"
           ],
-          "why": "say it is not proof for anyone else"
+          "why": "say where the proof for them comes from"
         }
       ],
       "forbid": [

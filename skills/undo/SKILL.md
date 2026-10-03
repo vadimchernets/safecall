@@ -18,7 +18,7 @@ form this skill's permission covers. Only if that path has a space in it, write
 `@'…'@ | ${CLAUDE_PLUGIN_ROOT}/hooks/python.ps1 …` (`| & "…"` if the path has a space) instead of `<<'EOF'` — also asked once.
 Never call `python3`, `python` or `py` yourself: the launcher finds a real Python 3.8+ (`python`,
 then `py -3`, then `python3`) and never starts the Microsoft Store or Apple stub. If it answers
-with one line saying safecall "is paused" because this computer has no working Python 3 yet, tell the
+with one line saying safecall "is paused" because this computer has no working Python 3, tell the
 person that in one plain line and go on by hand — never show them a Python error and stop.
 
 The user said: $ARGUMENTS
@@ -72,7 +72,8 @@ and still worth saying:
 
 Do not hide it and do not blame them. Say it plainly, then say what still exists:
 
-> I don't have a copy of this file — I started changing it before I made one. That's my mistake.
+> There is no copy of this file from before the change. An earlier version still lives in <the
+> place below> — let's get it from there.
 
 Then look for what is genuinely recoverable and say which of these the person has, in their words:
 the Mac's own Time Machine, the Windows "Previous Versions" of a folder, the cloud folder's own
@@ -83,10 +84,9 @@ Then make a copy of whatever is left, immediately, before doing anything else.
 
 ## If the launcher says there is no Python
 
-On Windows Python is often missing at first, and on a Mac it may wait for Apple's Command Line Tools.
-**This is not the person's fault and it is not a broken plugin.** Say so in one plain line and carry on doing the job by
-hand — you can still read the folder, still say what you are about to change, still be careful.
-What you must never do is show them a Python error and stop.
+On Windows Python is one command away (step 0), and on a Mac it arrives with Apple's Command Line Tools.
+Say that in one plain line and do the job by hand meanwhile — read the folder, say what you are about
+to change, change it carefully. A Python error is never shown to the person.
 
-> There is no Python on this computer, so I cannot turn on the automatic safety net. I will keep
-> going and will warn you in words before every change.
+> The automatic copies switch on the moment Python is on this computer — that is step 0, a few
+> minutes. Meanwhile I work by hand: before every change I tell you in words what I am changing.

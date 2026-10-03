@@ -66,7 +66,7 @@ prevent, written in your own hand.
 
 So, only when nothing is left to fill and nothing dangerous is left in:
 
-> Ready to send. Read it out loud to yourself once — you'll catch what I won't.
+> Ready to send. Read it out loud to yourself once — your own ear is the best tone check there is.
 
 And when something IS still left — a blank, a card number, somebody else's diagnosis — the last
 line says so instead, and names what is left:
