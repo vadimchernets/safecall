@@ -75,7 +75,7 @@ question is wrong about:
 
 Never present the fourth as the second.
 
-**And a hedge does not turn the fourth into the second.** "This used to be 1,200 rubles, but the
+**And a hedge does not turn the fourth into the second.** "This used to be $15 a month, but the
 figure may be outdated" is still a number you do not know, handed to somebody who will remember the
 number and forget the hedge. If you have no source for a sum, a rate or a date, **do not say one at
 all** — say that you do not know it and name the exact page where it is written. A figure with a
