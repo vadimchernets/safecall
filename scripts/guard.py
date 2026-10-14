@@ -38,6 +38,7 @@ in front of the reason; a "deny" arrives as the reason alone, and blocks just th
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -48,7 +49,12 @@ HERE = Path(__file__).resolve().parent
 SNAPSHOT = HERE / "snapshot.py"
 LANG_DIR = HERE.parent / "lang"
 
-WRITERS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
+WRITERS = {"Write", "Edit", "MultiEdit", "NotebookEdit", "apply_patch"}
+
+# Codex edits files with `apply_patch`: the hook payload carries the whole patch text
+# (tool_input.command), and the files it changes are named on "*** Update File:" /
+# "*** Delete File:" / "*** Move to:" lines. A file that is only ADDED needs no copy.
+_PATCH_LINE = re.compile(r"^\*\*\* (?:Update File|Delete File): (.+?)\s*$", re.M)
 
 
 def _lang_files():
@@ -103,6 +109,20 @@ def state_file(folder):
     return primary
 
 
+def _patch_targets(payload):
+    """Existing files an apply_patch patch changes or deletes, as Paths (cwd-relative made absolute)."""
+    ti = payload.get("tool_input") or {}
+    text = ti.get("command") or ti.get("input") or ti.get("patch") or ""
+    if isinstance(text, list):
+        text = "\n".join(str(x) for x in text)
+    base = Path(str(payload.get("cwd") or Path.cwd()))
+    out = []
+    for name in _PATCH_LINE.findall(str(text)):
+        p = Path(name).expanduser()
+        out.append(p if p.is_absolute() else base / p)
+    return out
+
+
 def _target(payload):
     ti = payload.get("tool_input") or {}
     for k in ("file_path", "notebook_path", "path"):
@@ -125,9 +145,19 @@ def main():
     if payload.get("tool_name") not in WRITERS:
         return 0
 
+    if payload.get("tool_name") == "apply_patch":
+        rc = 0
+        for t in _patch_targets(payload):
+            rc = _guard_one(t, payload) or rc
+        return rc
+
     target = _target(payload)
     if target is None:
         return 0
+    return _guard_one(target, payload)
+
+
+def _guard_one(target, payload):
     try:
         target = target.resolve()
     except OSError:
