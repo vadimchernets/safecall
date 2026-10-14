@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.11 — 2026-10-14
+
+- Hooks also fire on Codex `apply_patch`: the hook matcher includes it, and the file paths are read from the patch text, so an edit made through Codex is checked the same way as one made through Claude Code.
+
 ## 0.1.10 — 2026-10-13
 
 - Changelog wording only: the 0.1.9 note names the currency guard without its file name. No skill changes.
